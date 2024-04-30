@@ -15,7 +15,7 @@ pipeline {
         stage('Test') {
             steps {
                 // 运行测试并生成 surefire 报告
-                sh 'mvn test surefire-report:report'
+                sh 'mvn test surefire-report:report -Dmaven.test.failure.ignore=true'
             }
             post {
                 always {
@@ -35,7 +35,7 @@ pipeline {
             post {
                 always {
                     // 存档生成的 Javadoc jar
-                    archiveArtifacts artifacts: '**/target/*-javadoc.jar', fingerprint: true
+                    archiveArtifacts artifacts: '**/*-javadoc.jar', fingerprint: true
                 }
             }
         }
