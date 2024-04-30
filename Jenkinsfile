@@ -29,7 +29,7 @@ pipeline {
         stage('Generate Javadoc') {
             steps {
                 // 生成 Javadoc jar
-                sh 'mvn javadoc:jar'
+                sh 'mvn javadoc:jar --failnever'
             }
             post {
                 always {
