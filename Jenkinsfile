@@ -30,7 +30,7 @@ pipeline {
             steps {
                 // 生成 Javadoc jar
                 sh 'mvn javadoc:jar -Dmaven.javadoc.failOnError=false'
-'
+
             }
             post {
                 always {
