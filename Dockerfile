@@ -1,4 +1,4 @@
-FROM sismics/ubuntu-jetty:9.4.36
+FROM sismics/ubuntu-jetty:latest
 #Using the LABEL instruction to add metadata to the image,sets the maintainer's
 LABEL maintainer="b.gamard@sismics.com"
 # update the package list, install various packages,
