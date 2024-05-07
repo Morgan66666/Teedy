@@ -1,41 +1,33 @@
 pipeline {
     agent any
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'mvn -B -DskipTests clean package' 
-            }
-        }
-        stage('pmd') {
-            steps {
-                sh 'mvn pmd:pmd'
-            }
-        }
 
-        stage('Test') {
+    stages {
+        stage('Build') {
             steps {
-                // 运行测试并生成 surefire 报告
-                sh 'mvn test surefire-report:report -Dmaven.test.failure.ignore=true'
+                sh 'mvn -B -DskipTests clean package'
             }
-            post {
-                always {
-                    // 存档 surefire 报告
-                    archiveArtifacts artifacts: '**/surefire-reports/*.xml', fingerprint: true
-                    junit '**/surefire-reports/*.xml'
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    sh 'docker build -t teedy:${BUILD_ID} .'
                 }
             }
         }
-
-        stage('Generate Javadoc') {
+        stage('Docker Push') {
             steps {
-                // 生成 Javadoc jar
-                sh 'mvn javadoc:jar -Dmaven.javadoc.failOnError=false'
-
+                script {
+                    sh 'docker push teedy:${BUILD_ID}'
+                }
             }
-            post {
-                always {
-                    // 存档生成的 Javadoc jar
-                    archiveArtifacts artifacts: '**/*-javadoc.jar', fingerprint: true
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    // 运行 Docker 容器
+                    sh 'docker run -d -p 8082:8080 teedy:${BUILD_ID}'
+                    sh 'docker run -d -p 8083:8080 teedy:${BUILD_ID}'
+                    sh 'docker run -d -p 8084:8080 teedy:${BUILD_ID}'
                 }
             }
         }
