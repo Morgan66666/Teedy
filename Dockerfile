@@ -2,7 +2,7 @@ FROM sismics/ubuntu-jetty:9.4.36
 LABEL maintainer="b.gamard@sismics.com"
 
 RUN apt-get update && \
-    apt-get -y -q --no-install-recommends install \
+    apt-get -y -q install \
     ffmpeg \
     mediainfo \
     tesseract-ocr \
