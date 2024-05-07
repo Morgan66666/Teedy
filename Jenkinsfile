@@ -10,14 +10,14 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    sh 'docker build -t teedy:${BUILD_ID} .'
+                    sh 'docker build -t morgan666/teedy:${BUILD_ID} .'
                 }
             }
         }
         stage('Docker Push') {
             steps {
                 script {
-                    sh 'docker push teedy:${BUILD_ID}'
+                    sh 'docker push morgan666/teedy:${BUILD_ID}'
                 }
             }
         }
@@ -25,9 +25,9 @@ pipeline {
             steps {
                 script {
                     // 运行 Docker 容器
-                    sh 'docker run -d -p 8082:8080 teedy:${BUILD_ID}'
-                    sh 'docker run -d -p 8083:8080 teedy:${BUILD_ID}'
-                    sh 'docker run -d -p 8084:8080 teedy:${BUILD_ID}'
+                    sh 'docker run -d -p 8082:8080 morgan666/teedy:${BUILD_ID}'
+                    sh 'docker run -d -p 8083:8080 morgan666/teedy:${BUILD_ID}'
+                    sh 'docker run -d -p 8084:8080 morgan666/teedy:${BUILD_ID}'
                 }
             }
         }
